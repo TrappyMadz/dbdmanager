@@ -1,0 +1,8 @@
+from enum import Enum
+
+class DataBaseError(Enum):
+    ROLLBACK_ERROR = "DATABASE_ROLLBACK_ERROR"
+    CONNECTION_ERROR = "DATABASE_CONNECTION_ERROR"
+
+class PatchNoteError(Enum):
+    MISSING_ERROR = "PATCHNOTE_MISSING_ERROR"
