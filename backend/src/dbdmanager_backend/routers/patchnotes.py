@@ -3,9 +3,9 @@ from sqlalchemy import desc
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
 from sqlmodel import select
-from .database import get_db
-from .schemas import PatchNote, PatchNoteCreate, PatchNoteRead, PatchNoteUpdate
-from .errors import DataBaseError, PatchNoteError
+from ..database import get_db
+from ..schemas import PatchNote, PatchNoteCreate, PatchNoteRead, PatchNoteUpdate
+from ..errors import DataBaseError, PatchNoteError
 import uuid
 import logging
 
