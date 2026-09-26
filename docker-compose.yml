@@ -1,0 +1,37 @@
+services:
+  dbdmanager_db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - dbdmanager_db_volume:/var/lib/postgresql
+    networks:
+      - dbdmanager_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+  
+  dbdmanager_backend:
+    build: ./backend
+    env_file:
+      - .env
+    ports:
+      - "${BACKEND_PORT}:8000"
+    depends_on:
+      dbdmanager_db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - dbdmanager_network
+
+volumes:
+  dbdmanager_db_volume:
+networks:
+  dbdmanager_network:
+    driver: bridge
+

@@ -1,5 +1,6 @@
 from sqlmodel import Field, SQLModel, Column
 from datetime import datetime, timezone
+from sqlalchemy import Enum as sql_enum
 from enum import Enum
 import uuid
 
@@ -13,7 +14,7 @@ class PatchNoteBase(SQLModel):
     title: str
     content: str
     category: PatchNoteType = Field(sa_column=Column(
-        Enum(PatchNoteType),
+        sql_enum(PatchNoteType),
         nullable=False,
         index=False
     ))
