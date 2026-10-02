@@ -1,1 +1,11 @@
-# To fill out
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.git/
+.gitignore
+.dockerignore
+.env
+.env.*
