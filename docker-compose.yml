@@ -20,6 +20,8 @@ services:
     build: ./backend
     env_file:
       - .env
+    environment:
+      - WATCHFILES_FORCE_POLLING=true
     ports:
       - "${BACKEND_PORT}:8000"
     depends_on:
@@ -28,6 +30,9 @@ services:
     restart: unless-stopped
     networks:
       - dbdmanager_network
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/alembic:/app/alembic
 
 volumes:
   dbdmanager_db_volume:
