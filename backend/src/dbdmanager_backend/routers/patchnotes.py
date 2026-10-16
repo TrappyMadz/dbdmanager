@@ -59,7 +59,7 @@ async def update_patchnote(id: uuid.UUID, patchnote_update_data: PatchNoteUpdate
     db_patchnote = results.scalars().one_or_none()
     if db_patchnote is None:
         logger.warning(f"{PatchNoteError.MISSING_ERROR.value} : patchnote {id} does not exists.")
-        raise HTTPException(status_code=404, detail={"code":PatchNoteError.MISSING_ERROR.value, "id":id})
+        raise HTTPException(status_code=404, detail={"code":PatchNoteError.MISSING_ERROR.value, "id":str(id)})
     logger.info(f"Patchnote {id} found ! Applying update.")
     db_patchnote.sqlmodel_update(patchnote_update_dict)
     try:
@@ -90,7 +90,7 @@ async def delete_patchnote(id: uuid.UUID, session: AsyncSession = Depends(get_db
 
     if results is None:
         logger.warning(f"{PatchNoteError.MISSING_ERROR.value} : patchnote {id} does not exists.")
-        raise HTTPException(status_code=404, detail={"code":PatchNoteError.MISSING_ERROR.value, "id":id})
+        raise HTTPException(status_code=404, detail={"code":PatchNoteError.MISSING_ERROR.value, "id":str(id)})
     logger.info(f"Patchnote {id} found ! Deleting.")
 
     try:
