@@ -46,6 +46,22 @@ async def get_all_patchnotes(session: AsyncSession = Depends(get_db)):
     logger.info(f"Patchnote list : {results}")
     return results
 
+@router.get("/get/{id}", response_model=PatchNoteRead)
+async def get_patchnote_by_id(id: uuid.UUID, session: AsyncSession = Depends(get_db)):
+    logger.info(f"Getting patchnote {id}...")
+    statement = select(PatchNote).where(PatchNote.id == id)
+    try:
+        results = await session.execute(statement=statement)
+    except SQLAlchemyError as sql_error:
+        logger.error(f"{DataBaseError.CONNECTION_ERROR.value} : {sql_error}.")
+        raise HTTPException(status_code=500, detail={"code":DataBaseError.CONNECTION_ERROR.value}) from sql_error
+    db_patchnote = results.scalars().one_or_none()
+    if db_patchnote is None:
+        logger.warning(f"{PatchNoteError.MISSING_ERROR.value} : patchnote {id} does not exists.")
+        raise HTTPException(status_code=404, detail={"code":PatchNoteError.MISSING_ERROR.value, "id":str(id)})
+    logger.info(f"Patchnote {id} found !")
+    return db_patchnote
+
 @router.patch("/update/{id}", response_model=PatchNoteRead)
 async def update_patchnote(id: uuid.UUID, patchnote_update_data: PatchNoteUpdate , session: AsyncSession = Depends(get_db)):
     patchnote_update_dict = patchnote_update_data.model_dump(exclude_unset=True)

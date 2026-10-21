@@ -1,1 +1,40 @@
-# To fill out
+# Dépendances et builds
+**/node_modules
+**/dist
+**/dist-ssr
+**/coverage
+**/*.local
+
+# Caches et fichiers générés
+**/*.tsbuildinfo
+**/.eslintcache
+**/*.timestamp-*-*.mjs
+**/__screenshots__
+
+# Logs
+**/logs
+**/*.log
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/pnpm-debug.log*
+
+# Git et éditeurs
+**/.git
+**/.gitignore
+**/.vscode
+**/.idea
+**/.DS_Store
+
+# Docker
+**/.dockerignore
+**/Dockerfile*
+**/docker-compose*
+**/compose*
+
+# Secrets et configuration locale
+**/.env
+**/.env.*
+
+# Documentation
+README.md

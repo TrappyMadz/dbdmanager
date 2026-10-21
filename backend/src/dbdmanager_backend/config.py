@@ -8,6 +8,10 @@ class Settings(BaseSettings):
     db_user: str
     db_password: str
     db_name: str
+    frontend_port: int
+    @property
+    def cors_origins(self) -> list[str]:
+        return [f"http://localhost:{self.frontend_port}"]
     
     @property
     def db_url(self) -> str:
