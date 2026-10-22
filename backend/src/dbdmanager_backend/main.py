@@ -14,6 +14,6 @@ app.add_middleware(
     allow_headers=["Content-Type"],
 )
 
-@app.get("/")
+@app.get("/health", tags=["Health"])
 async def health():
     return {"code":200,"message":"healthy !"}

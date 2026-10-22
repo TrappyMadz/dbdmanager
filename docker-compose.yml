@@ -2,17 +2,17 @@ services:
   dbdmanager_db:
     image: postgres:18-alpine
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER:?"DB_USER environment variable is not set"}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?"DB_PASSWORD environment variable is not set"}
+      POSTGRES_DB: ${DB_NAME:?"DB_NAME environment variable is not set"}
     volumes:
       - dbdmanager_db_volume:/var/lib/postgresql
     networks:
       - dbdmanager_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
-      interval: 1m30s
-      timeout: 30s
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:?'DB_USER environment variable is not set'} -d $${POSTGRES_DB:?'DB_NAME environment variable is not set'}"]
+      interval: 10s
+      timeout: 3s
       retries: 5
       start_period: 30s
   
@@ -23,7 +23,7 @@ services:
     environment:
       - WATCHFILES_FORCE_POLLING=true
     ports:
-      - "${BACKEND_PORT}:8000"
+      - "${BACKEND_PORT:?'BACKEND_PORT environment variable is not set'}:8000"
     depends_on:
       dbdmanager_db:
         condition: service_healthy
@@ -33,6 +33,26 @@ services:
     volumes:
       - ./backend/src:/app/src
       - ./backend/alembic:/app/alembic
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+
+  dbdmanager_frontend:
+    build: ./frontend
+    ports:
+      - "${FRONTEND_PORT:?'FRONTEND_PORT environment variable is not set'}:5173"
+    depends_on:
+      dbdmanager_backend:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - dbdmanager_network
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
 
 volumes:
   dbdmanager_db_volume:
