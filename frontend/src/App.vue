@@ -1,11 +1,23 @@
 <script setup lang="ts"></script>
 
 <template>
-  <h1>Test</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <nav>
+    <RouterLink to="/">Home</RouterLink>
+    <RouterLink to="/patchnotes">Patch Notes</RouterLink>
+    <RouterLink to="/admin/patchnotes">Patch Notes Admin</RouterLink>
+    <RouterLink to="/admin/patchnotes/edit/1">Edit Patch Notes</RouterLink>
+    <RouterLink to="/admin/patchnotes/new">New Patch Notes</RouterLink>
+    <RouterLink to="/404">404</RouterLink>
+  </nav>
+  <main>
+    <RouterView />
+  </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+  nav {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+</style>
