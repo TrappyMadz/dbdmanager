@@ -1,11 +1,9 @@
 <script setup lang="ts">
-    import  { useRoute } from 'vue-router';
-    const route = useRoute();
-    console.log(route.params.id);
+    const { id } = defineProps<{id: string}>()
 </script>
 
 <template>
-    <h1>Edit Patch Notes {{ route.params.id }}</h1>
+    <h1>Edit Patch Notes {{ id }}</h1>
 </template>
 
 <style scoped></style>

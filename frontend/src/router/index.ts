@@ -26,7 +26,8 @@ const  routes: RouteRecordRaw[] = [
     {
       path: '/admin/patchnotes/edit/:id',
       name: 'AdminPatchNotesEdit',
-      component: AdminPatchNotesEdit
+      component: AdminPatchNotesEdit,
+      props: true
     },
     {
       path: '/admin/patchnotes/new',
